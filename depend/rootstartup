@@ -1,0 +1,42 @@
+{//This is my own damn root startup script...
+	printf("\nWelcome to the ROOT.  How can I help you today?\n\n");
+// Here is a less ugly style environment...
+	TStyle *MyStyle = new TStyle("MyStyle","");
+	MyStyle->SetOptFit(1111);
+	MyStyle->SetOptStat(0);
+	MyStyle->SetStatColor(0);
+	MyStyle->SetLineWidth(2);
+	MyStyle->SetTextSize(0.06);
+	MyStyle->SetTextFont(42);
+	MyStyle->SetTitleX(0.5);
+	MyStyle->SetTitleY(0.95);
+	MyStyle->SetTitleFont(42,"xyz");
+	MyStyle->SetTitleFont(42,"");
+	MyStyle->SetTitleFontSize(0.06);
+	MyStyle->SetTitleSize(0.06,"xy");
+	MyStyle->SetTitleBorderSize(0);
+	MyStyle->SetTitleFillColor(0);
+	MyStyle->SetTitleOffset(0.8,"x");
+	MyStyle->SetTitleOffset(0.65,"y");
+	MyStyle->SetTitleAlign(22);
+	MyStyle->SetLabelFont(42,"xyz");
+	MyStyle->SetLabelSize(0.05,"xyz");
+	MyStyle->SetFrameFillColor(0);
+	MyStyle->SetFillColor(10);
+	MyStyle->SetHistLineWidth(2);
+	MyStyle->SetCanvasBorderMode(0);
+	MyStyle->SetCanvasColor(0);
+//	MyStyle->SetLegendBorderSize(0);
+	MyStyle->SetFuncColor(kBlue);
+	MyStyle->SetCanvasDefH(500);
+	MyStyle->SetCanvasDefW(600);
+	MyStyle->SetPadColor(0);
+	MyStyle->SetPadBorderMode(0);
+	MyStyle->SetPadTopMargin(0.10);
+	MyStyle->SetPadBottomMargin(0.12);
+	MyStyle->SetPadLeftMargin(0.10);
+	MyStyle->SetPadRightMargin(0.04);
+	MyStyle->SetFrameBorderMode(0);
+	gROOT->SetStyle("MyStyle");
+}
+
