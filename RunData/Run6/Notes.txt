@@ -1,0 +1,25 @@
+TPB Efficiency Data Calculations
+4/28/2015 - 3:00 PM
+
+Equiptment/Configuration:
+Calibrated Photodiode
+New Lamp
+Old Photodiode Assembly
+No Filter Wheel 
+Gas Pressure: 1.4 Torr
+Lamp Current: 400 mA
+
+Slots
+1 - Dark
+2 - Light
+3 - TPB, 0.6 micron Sample 2
+
+Closed vertical shutters to close their original width.
+
+emissionSpectRun:1
+emissionSpectName:TPBEmission160nm
+histColor:1
+histLine:1
+histTitle:Low Wavelength Efficiency
+histName:EffSample_p6
+

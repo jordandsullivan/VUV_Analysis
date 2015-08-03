@@ -1,0 +1,14 @@
+7/14/2015
+
+Took Vic's old evap deposited disks and measured high wavelength current data.
+
+Used old lamp and measured wavelengths 250 nm to 110 nm in steps of 10 nm.
+For wavelengths greater than 200 nm, I put a quartz disk (slot 1) in the beam line right after the lamp.
+
+emissionSpectRun:1
+emissionSpectName:TPBEmission160nm
+histColor:1
+histLine:1
+histTitle:High Wavelength Efficiency
+histName:EffVicsTPB
+ 
