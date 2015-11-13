@@ -1,0 +1,146 @@
+#!/bin/python
+import os
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import ROOT
+import math
+import numpy as np
+
+ROOT.gStyle.SetOptStat(0);
+
+pathToData = '/data/snoplus/home/cbenson/VUV/data/p75_11x11_flat_500k_inSlit_p14/'
+dataFileList = os.listdir(pathToData)
+
+files = []
+for namee in dataFileList:
+    if 'Analysis' in namee:
+        files.append(namee)
+
+fileSet = []
+for i in range(1,len(files)+1):
+	fileSet.append('pos'+str(i)+'Analysis.txt')
+	
+
+
+positions = []
+trackTypeResults = []
+
+for iFile in range(len(fileSet)):
+	tempPos = []
+	tempTrackType = []
+	try:
+		tempFile = open(pathToData+fileSet[iFile],'r').read().split('\n')[:-1]
+	except:
+		continue
+	
+	try:	
+		for index,line in enumerate(tempFile):
+			tempData = line.split(':')[1]
+			lineLabel = line.split(':')[0]
+			if lineLabel == 'Results from':
+				continue
+			elif lineLabel == 'source coords':
+				# source position
+		 		tempData = tempData.replace('[','')
+		 		tempData = tempData.replace(']','')
+		 		tempData  = tempData.split(',')
+		 		tempPos = [float(tempData[0]),float(tempData[1]),float(tempData[2])]
+		 		positions.append(tempPos)
+		 	elif lineLabel == 'track type vect':
+		 		tempData = tempData.replace('[','')
+		 		tempData = tempData.replace(']','')
+		 		tempData = tempData.split(',')
+		 		for val in tempData:
+		 			tempTrackType.append(int(val))
+		 		trackTypeResults.append(tempTrackType)
+	 		else:
+	 			continue
+ 	except:
+ 		print fileSet[iFile]+' had a problem in extraction loop.'
+ 		continue
+ 		
+##### NOw plot the positions of the starting points
+figPos = plt.figure()
+axPos = figPos.add_subplot(111,projection='3d')
+x= []; y= []; z = []
+for coord in positions:
+	x.append(coord[0])
+	y.append(coord[1])
+	z.append(coord[2])
+axPos.scatter(x,y,z)
+figPos.show()
+
+#### Now plot the number of photons simulated at each position (intensity vs. pos)
+# First get number of simulated photons by summing first 3 elements. Then get sint by summering last 5. Then get geo factor
+simPhotonTot = []
+sintPhotonTot = []
+detectPhotonTot = []
+geoFactor = []
+for index,row in enumerate(trackTypeResults):
+	tempSimPhoton = sum(row[0:3])
+	simPhotonTot.append(tempSimPhoton)
+	tempScintPhotons = sum(row[3:])
+	sintPhotonTot.append(tempScintPhotons)
+	tempDetect = row[8]
+	detectPhotonTot.append(tempDetect)
+	if tempScintPhotons > 0:
+		geoFactor.append(float(tempDetect)/float(tempScintPhotons))
+	else:
+		geoFactor.append(np.nan)
+
+#Cintensity = ROOT.TCanvas()
+#histI = ROOT.TH2D('Intensity','Intensity',int(math.sqrt(len(fileSet))),min(y),max(y),int(math.sqrt(len(fileSet))),min(z),max(z))
+#for index,row in enumerate(simPhotonTot):
+#	histI.FillN(int(row),y[index],z[index])
+	
+histScint = ROOT.TH2D('ScintP','ScintP',int(math.sqrt(len(fileSet))),min(y),max(y),int(math.sqrt(len(fileSet))),min(z),max(z))
+for index,row in enumerate(sintPhotonTot):
+	for i in range(row):
+		histScint.Fill(float(y[index]),float(z[index]))
+Cscint = ROOT.TCanvas()
+histScint.GetXaxis().SetTitle("Source Y position [mm]")
+histScint.GetYaxis().SetTitle("Source Z position [mm]")
+histScint.SetTitle("Number of resulting scintillation photons as a function of source position on grating")
+histScint.Draw('COLZ')
+	
+histDetect = ROOT.TH2D('detectP','detectP',int(math.sqrt(len(fileSet))),min(y),max(y),int(math.sqrt(len(fileSet))),min(z),max(z))
+for index,row in enumerate(detectPhotonTot):
+	for i in range(row):
+		histDetect.Fill(float(y[index]),float(z[index]))
+Cdetect = ROOT.TCanvas()
+histDetect.GetXaxis().SetTitle("Source Y position [mm]")
+histDetect.GetYaxis().SetTitle("Source Z position [mm]")
+histDetect.SetTitle("Number of detected photons as a function of source position on grating")
+histDetect.Draw('COLZ')
+
+histgeo = ROOT.TH2D('geoFactor','geoFactor',int(math.sqrt(len(fileSet))),min(y),max(y),int(math.sqrt(len(fileSet))),min(z),max(z))
+for index,row in enumerate(geoFactor):
+	if np.isnan(row):
+		continue
+	else:
+		histgeo.Fill(float(y[index]),float(z[index]),row)
+Cgeo = ROOT.TCanvas()
+histgeo.Draw('COLZ')
+
+
+### Now calculate the global geometric efficiency
+totalScint = 0
+totalDetect = 0
+for index,val in enumerate(sintPhotonTot):
+	if val == 0:
+		continue
+	totalScint += val
+	totalDetect += detectPhotonTot[index]
+globalGeoFactor = float(totalDetect)/float(totalScint)
+uncert = globalGeoFactor*math.sqrt((math.sqrt(totalDetect)/float(totalDetect))**2+(math.sqrt(totalScint)/float(totalScint))**2)
+
+print 'Total Number of simulated photons: '+str(sum(simPhotonTot))
+print 'Total Scint Photons: '+str(totalScint)
+print 'Total Detected Photons: '+str(totalDetect)
+print 'Integrated Geometric Factor: '+str(globalGeoFactor)+' +/- '+str(uncert)+' or '+str(uncert/globalGeoFactor*100)+'%'
+
+
+
+
+
+

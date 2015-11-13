@@ -1,0 +1,32 @@
+#!/bin/bash
+
+export NUM_POS="121"
+export NUM_PHOTONS="500000"
+export OUTPUT_PATH="/data/snoplus/home/cbenson/VUV/data/p75_11x11_flat_500k_sampleSlitVertSS/"
+export MACRO_PATH="/data/snoplus/home/cbenson/VUV/macros/sourceMacros/"
+
+echo "Running Python macro generator."
+python sourceMacroGen.py $NUM_PHOTONS
+
+echo "Copying local VUV.geo into RAT and storage location."
+cp VUV.geo $RATROOT/data/VUV/VUV.geo
+cp VUV.geo $OUTPUT_PATH/VUV.geo
+
+echo "Starting job submission loop"
+
+for (( posNum=1; posNum<$NUM_POS+1; posNum++))
+do
+	export MACRO_FILE=$MACRO_PATH"pos"$posNum".mac"
+	export OUTPUT_FILE=$OUTPUT_PATH"pos"$posNum".root"
+	export JOBOUTPUTFILE=$OUTPUT_PATH"pos"$posNum".txt"
+	
+	echo $MACRO_FILE
+	echo $OUTPUT_FILE
+	echo ""
+	echo ""
+	
+	srun --comment="$@VUV_Photon_Sim_Pos_$posNum" rat -o $OUTPUT_FILE $MACRO_FILE $@ >$JOBOUTPUTFILE  2>&1 &
+	sleep 0.01
+done
+
+

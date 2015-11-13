@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Submit a batch of analysis jobs to cluster. Processing photon runs.
+export NUM_POS="121"
+export FILE_PATH="/data/snoplus/home/cbenson/VUV/data/p75_11x11_flat_500k_sampleSlitVertSS/"
+#export JOB_OUTFILE="clusterTestOut15.txt"
+
+echo "Starting job submission loop"
+for (( posNum=1; posNum<$NUM_POS+1; posNum++ ))
+do
+	export INPUT_FILE=$FILE_PATH"pos"$posNum".root"
+	export JOB_OUTPUT=$FILE_PATH"pos"$posNum"Analysis.txt"
+	
+	srun --comment="$@VUV_Analysis_$posNum" python geoFactorCalc.py $INPUT_FILE >$JOB_OUTPUT 2>&1 &
+	sleep 0.05
+	
+done
+

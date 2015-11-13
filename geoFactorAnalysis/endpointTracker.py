@@ -1,0 +1,129 @@
+#!/bin/python
+import rat
+import ROOT
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+pathToData = '/data/snoplus/home/cbenson/VUV/data/'
+fileName = 'test.root'
+
+fileIterator = rat.dsreader(pathToData+fileName)
+
+zoomInTPB = False
+
+dataVect = []
+targetTracks = []
+listOfVolumes = []
+targetVolume = []
+remmittedTracks = []
+
+keepGoing = True
+EventIndex = -1
+while keepGoing:
+	try:
+		tempEntry = fileIterator.next()
+		EventIndex += 1
+		if EventIndex % 1000 == 0:
+			print EventIndex
+	except:
+		keepGoing = False
+		continue
+		
+	tempMC = tempEntry.GetMC()
+	for trackIndex in range(tempMC.GetMCTrackCount()):
+		# loop over the tracks in the DS
+		tempTrack = tempMC.GetMCTrack(trackIndex)
+		tempStep = tempTrack.GetMCTrackStep(tempTrack.GetMCTrackStepCount()-1)
+		tempCoords = tempStep.GetEndpoint()
+		tempCoordVect = [tempCoords.x(),tempCoords.y(),tempCoords.z()]
+		
+		# first pass
+		if tempCoordVect[0] > 30.0 and (tempCoordVect[2]<150 and tempCoordVect[2]> -100) and (tempCoordVect[1]<50 and tempCoordVect[1]> -50):
+			pass
+		else: 
+			continue
+		
+		if tempCoordVect[0] >50:
+			tempTrackData = []
+			hitTarget = False
+			photonRemmitted = False
+			for iStep in range(tempTrack.GetMCTrackStepCount()):
+				tempStep = tempTrack.GetMCTrackStep(iStep)
+				endpointData = tempStep.GetEndpoint()
+				tempTrackData.append([endpointData.x(),endpointData.y(),endpointData.z()])
+				if tempStep.GetVolume() not in listOfVolumes:
+					listOfVolumes.append(tempStep.GetVolume())
+				if 'detector_vol_vac' in tempStep.GetVolume():
+					hitTarget = True
+				if iStep == 0 and (endpointData.x()>166.0 and endpointData.x()<167.0):
+					photonRemmitted = True
+			if hitTarget:
+				targetTracks.append(tempTrackData)
+				targetVolume.append(tempTrackData[-1])
+			if photonRemmitted == True:
+				remmittedTracks.append(tempTrackData)
+				
+				
+		if len(dataVect) < 5000:
+			dataVect.append(tempCoordVect)
+		
+print listOfVolumes
+print 'plotting now!'
+fig = plt.figure()
+ax = fig.add_subplot(111,projection='3d')
+
+### Plot hits that terminate on something other than target
+x = []
+y = []
+z = []
+for row in dataVect:
+	x.append(row[0])
+	y.append(row[1])
+	z.append(row[2])
+ax.scatter(xs=x,ys=y,zs=z,color='b')
+
+# Plot hits that terminate on detector
+x = []
+y = []
+z = []
+for row in targetVolume:
+	x.append(row[0])
+	y.append(row[1])
+	z.append(row[2])
+ax.scatter(xs=x,ys=y,zs=z,color='r')
+
+# Now plot the tracks
+for row in targetTracks:
+	x1 = []
+	y1 = []
+	z1 = []
+	for points in row:
+		x1.append(points[0])
+		y1.append(points[1])
+		z1.append(points[2])
+	ax.plot(xs=x1,ys=y1,zs=z1)
+	
+# Now plot the reemitted photons
+for rowi,row in enumerate(remmittedTracks):
+	x1 = []
+	y1 = []
+	z1 = []
+	for points in row:
+		x1.append(points[0])
+		y1.append(points[1])
+		z1.append(points[2])
+	#if rowi < 1000:
+		#ax.plot(xs=x1,ys=y1,zs=z1)
+
+if zoomInTPB == True:
+	lims = 10
+	ax.set_xlim([160,180])
+	ax.set_ylim([20,40])
+	ax.set_zlim([-1*lims,lims])
+else:
+	lims = 50
+	ax.set_xlim([100,200])
+	ax.set_ylim([-1*lims,lims])
+	ax.set_zlim([-1*lims,lims])
+
+plt.show()
