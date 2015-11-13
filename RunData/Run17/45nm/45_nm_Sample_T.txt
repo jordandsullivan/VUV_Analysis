@@ -1,0 +1,2 @@
+Time,Pressure,Mean Current [nA],RMS Current [nA]
+14:47,1.4,1.298000E-2,1.989975E-4

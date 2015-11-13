@@ -1,0 +1,13 @@
+Photodiode C-29827 040
+
+low wavelength data run with new photodiode. Want to look at relative difference in response of the photodiodes
+to make sure they are working before sending them off to NIST for calibration.
+
+1.4 torr, 400 mA
+
+emissionSpectRun:15
+emissionSpectName:TPBEmission160nm
+histColor:1
+histLine:1
+histTitle:Low Wavelength Efficiency
+histName:EffSample_p22

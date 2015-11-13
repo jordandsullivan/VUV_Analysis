@@ -1,0 +1,8 @@
+# Notes on plotting
+
+current = 1
+spectrum = 2
+
+type:1
+runs:12,14,3
+legend:Published Data (2008 NIST and IRD calibration), Our data with 2014 NIST and 2008 IRD calibration curve, Our EUV Data (2014 NIST and 2008 IRD calibration)

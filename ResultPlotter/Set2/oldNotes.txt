@@ -1,0 +1,8 @@
+# Notes on plotting
+
+current = 1
+spectrum = 2
+
+type:1
+runs:2,3,7,8,9
+legend:Vic High Wavelength,Vic Low Wavelength,Published Data,Our TPB Film High,Our TPB Film Low

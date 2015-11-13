@@ -1,0 +1,8 @@
+# Notes on plotting
+
+current = 1
+spectrum = 2
+
+type:1
+runs:18,19,21,20
+legend:040 Low, 003 Low, 040 High, 003 High

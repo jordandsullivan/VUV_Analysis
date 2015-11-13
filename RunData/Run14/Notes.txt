@@ -1,0 +1,20 @@
+10/14/2015
+Chris Benson
+
+Purpose:
+In looking at the sensitivty of efficiency data on the photodiode calibration curves, I thought it would be good to double check our
+measurments of the TPB samples vic used in his publication. Our curves are quite different in normalization so it would be 
+good to check with a different data set.
+
+Range: 250 to 120 nm
+Setup: old lamp, focusing elbow, vics 0.2 mg/cm2 TPB sample Circa 2010
+Filter: Quartz in 250nm to 210 nm. No filter below.
+Pressure: 2.1e-2 at start. End Pressure 3.3E-2
+Time: 11:00
+
+emissionSpectRun:15
+emissionSpectName:TPBEmission160nm
+histColor:1
+histLine:1
+histTitle:High Wavelength Efficiency
+histName:EffSample_p22

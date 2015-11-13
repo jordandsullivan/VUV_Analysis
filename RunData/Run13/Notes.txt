@@ -1,0 +1,19 @@
+This is a place holder for Vic’s published data for 0.33g/cm2
+2010 DATA
+
+Slots
+1 - Dark
+2 - Light
+3 - TPB
+
+Closed vertical shutters to close their original width.
+
+emissionSpectRun:1
+emissionSpectName:TPBEmission160nm
+histColor:1
+histLine:1
+histTitle:Low Wavelength Efficiency
+histName:EffSample_p33
+
+
+
