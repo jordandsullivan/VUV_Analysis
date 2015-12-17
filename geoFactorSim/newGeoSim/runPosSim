@@ -1,0 +1,35 @@
+#!/bin/bash
+#### Name of run. Data file will be created for this.
+tempVal='config_12'
+
+echo 'Did you check the TPB remission angular dist?'
+
+echo 'Running geoGenerator.'
+python ../../geoFactory/geoGenerator.py
+
+echo 'Copying VUV.geo and source coordinates to local directory.'
+cp ../../geoFactory/VUV.geo ~/rat/data/VUV/VUV.geo
+cp ../../geoFactory/sourceCoords.json . 
+
+echo 'Removing previous macros.'
+rm ./macros/*.mac
+echo 'Running macro generator.'
+python sourceMacroGen.py
+
+### Get number of macros files to submit to cluster
+shopt -s nullglob
+files=( ./macros/*.mac )
+echo 'Number of Macros to submit :'${#files[@]}
+
+## Make data director
+mkdir data/$tempVal
+mkdir data/$tempVal/geoCalcs
+
+### submit the jobs to the cluster
+for i in $(seq ${#files[@]})
+do
+	echo 'Submitting Positing '$i
+	srun --comment="$@VUV_Photon_Sim_Pos_$i" rat -o ./data/$tempVal/pos${i}.root ./macros/pos${i}.mac $@ >./logs/pos${i}.txt 2>&1 &
+	sleep 0.01
+done
+
