@@ -61,8 +61,8 @@ shutterTunnel.material = 'pmt_vacuum'
 masterString = shutterTunnel.writeToString(masterString)
 
 ### Sample wheel slit geometries
-slitWidth = 0.07
-slitHeight = 0.2
+slitWidth = 0.07  # Default = 0.07"
+slitHeight = 0.2 # Default = 0.2 Should probably measure again
 
 ### Left and right is defined looking down beam from source
 sampleSlitRight = GS.boxVolume('sample_wheel_slit_right',0.05,2,3)
@@ -108,7 +108,7 @@ sampleWheelHousing.center = {'x':0.0,'y':0.0,'z':-1*sampleWheelHousing.height/2.
 masterString = sampleWheelHousing.writeToString(masterString)
 
 #### Add photodioded
-distanceToPhotodiodeFromSampleWheel = 1.0/16.0
+distanceToPhotodiodeFromSampleWheel = 2.0/16.0
 
 photodiodeVolume = GS.boxVolume('photodiodeVolume',0.395,0.395,0.05)
 photodiodeVolume.mother = shutterTunnel.name
