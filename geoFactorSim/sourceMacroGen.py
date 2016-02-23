@@ -10,7 +10,7 @@ import sys
 
 argss = sys.argv
 
-pathToMacroStorage = '/data/snoplus/home/cbenson/VUV/macros/sourceMacros/'
+pathToMacroStorage = '/data/snoplus/home/cbenson/VUV/VUV_Analysis/geoFactorSim/sourceMacros/'
 openingAngleofGunCone = 3
 numPhotonsGen = argss[1]
 

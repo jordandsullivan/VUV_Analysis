@@ -1,6 +1,6 @@
 #!/bin/bash
 #### Name of run. Data file will be created for this.
-tempVal='config_12'
+tempVal='config_23'
 
 echo 'Did you check the TPB remission angular dist?'
 

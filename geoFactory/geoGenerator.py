@@ -8,8 +8,8 @@ from mpl_toolkits.mplot3d import Axes3D
 geoFileName = 'VUV.geo'
 
 #### TPB FILM SETTINGS #####
-surfaceTPB = True ## If true, only TPB surface will be created, not volume. If false, surface deactivated and tpb volume.
-tpbFilmThickness = 1  # in micrometers
+surfaceTPB = False ## If true, only TPB surface will be created, not volume. If false, surface deactivated and tpb volume.
+tpbFilmThickness = 50  # in micrometers
 saveTPB = True
 ############################
 ### Generate points on diffraction grating for simulation
@@ -166,7 +166,7 @@ tpbLayer.center = {'x':0.0,'y':0.0,'z':acrylicSampleDisk.center['z']+acrylicSamp
 if saveTPB:
     masterString = tpbLayer.writeToString(masterString)
 
-if tpbLayer:
+if surfaceTPB:
     tpbSurface = GS.border('TPBSurface',shutterTunnel.name,tpbLayer.name)
     tpbSurface.mother = shutterTunnel.name
     tpbSurface.surface = 'tpb_surface'

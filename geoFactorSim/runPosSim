@@ -2,15 +2,15 @@
 
 export NUM_POS="121"
 export NUM_PHOTONS="500000"
-export OUTPUT_PATH="/data/snoplus/home/cbenson/VUV/data/p75_11x11_flat_500k_sampleSlitVertSS/"
-export MACRO_PATH="/data/snoplus/home/cbenson/VUV/macros/sourceMacros/"
+export OUTPUT_PATH="/data/snoplus/home/cbenson/VUV/data/flatDist_SurfaceTPB_Isotropic/"
+export MACRO_PATH="/data/snoplus/home/cbenson/VUV/VUV_Analysis/geoFactorSim/sourceMacros/"
 
 echo "Running Python macro generator."
 python sourceMacroGen.py $NUM_PHOTONS
 
 echo "Copying local VUV.geo into RAT and storage location."
-cp VUV.geo $RATROOT/data/VUV/VUV.geo
-cp VUV.geo $OUTPUT_PATH/VUV.geo
+#cp VUV.geo $RATROOT/data/VUV/VUV.geo
+#cp VUV.geo $OUTPUT_PATH/VUV.geo
 
 echo "Starting job submission loop"
 
