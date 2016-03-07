@@ -9,7 +9,7 @@ geoFileName = 'VUV.geo'
 
 #### TPB FILM SETTINGS #####
 surfaceTPB = False ## If true, only TPB surface will be created, not volume. If false, surface deactivated and tpb volume.
-tpbFilmThickness = 50  # in micrometers
+tpbFilmThickness = 0.25  # in micrometers
 saveTPB = True
 ############################
 ### Generate points on diffraction grating for simulation
@@ -193,12 +193,12 @@ if generateSourcePoints:
             tempDict = {'node':indexCount,'x':GS.inTomm(diffractionGratingSurfaceLocation['x']+tempXOffset),'y':GS.inTomm(diffractionGratingSurfaceLocation['y']+tempYOffset),'z':GS.inTomm(diffractionGratingSurfaceLocation['z']+tempZOffset)}
             coordinatePairs.append(tempDict)
     
-    #fig = plt.figure()
-    #ax = fig.add_subplot(111,projection='3d')
-    #for line in coordinatePairs:
-    #    ax.scatter(line['x'],line['y'],line['z'],color='b')
-    #ax.scatter(diffractionGratingSurfaceLocation['x'],diffractionGratingSurfaceLocation['y'],diffractionGratingSurfaceLocation['z'],color='r')
-    #ax.scatter(diffractionGrating.center['x'],diffractionGrating.center['y'],diffractionGrating.center['z'],'g')
+    fig = plt.figure()
+    ax = fig.add_subplot(111,projection='3d')
+    for line in coordinatePairs:
+        ax.scatter(line['x'],line['y'],line['z'],color='b')
+    ax.scatter(diffractionGratingSurfaceLocation['x'],diffractionGratingSurfaceLocation['y'],diffractionGratingSurfaceLocation['z'],color='r')
+    ax.scatter(diffractionGrating.center['x'],diffractionGrating.center['y'],diffractionGrating.center['z'],'g')
    
     coordFile = open('./sourceCoords.json','w+')
     json.dump(coordinatePairs,coordFile)
