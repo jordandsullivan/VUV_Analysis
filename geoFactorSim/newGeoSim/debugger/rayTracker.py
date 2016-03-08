@@ -13,10 +13,10 @@ createPlot = False
 volumeNames = []
 detectedTracks = []
 
-for i in range(500000):
+for i in range(5000):
     tempEntry = fileIterator.next()
     tempMC = tempEntry.GetMC()
-
+    print i
     for iTrack in range(tempMC.GetMCTrackCount()):
         if iTrack > 3:
             break
