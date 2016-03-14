@@ -155,6 +155,23 @@ acrylicSampleDisk.colorVect[3] = 0.8
 acrylicSampleDisk.center = {'x':0.0,'y':0.0,'z':sampleWheelHousing.center['z']+sampleWheelHousing.height/2.0-acrylicSampleDisk.height/2.0-acrylicDiskFaceDistanceFromFrontSampleWheel}
 masterString = acrylicSampleDisk.writeToString(masterString)
 
+##### Put snap rings on both sides of the acrylic sample.
+# Snap ring radial thickness = 0.083"
+upstreamSnapRing = GS.tubeVolume('upstreamSnapRing',rMax=sampleWheelHousing.rMin,rMin=sampleWheelHousing.rMin-0.083,height=1./16)
+upstreamSnapRing.mother = shutterTunnel.name
+upstreamSnapRing.material = 'acrylic_black'
+upstreamSnapRing.colorVect[3] = 0.8
+upstreamSnapRing.center = {'x':0.0,'y':0.0,'z':acrylicSampleDisk.center['z']-acrylicSampleDisk.height/2.0-upstreamSnapRing.height/2.0}
+masterString = upstreamSnapRing.writeToString(masterString)
+
+# Downstream snap ring
+downstreamSnapRing = GS.tubeVolume('downstreamSnapRing',rMax=sampleWheelHousing.rMin,rMin=sampleWheelHousing.rMin-0.083,height=1./16)
+downstreamSnapRing.mother = shutterTunnel.name
+downstreamSnapRing.material = 'acrylic_black'
+downstreamSnapRing.colorVect[3] = 0.8
+downstreamSnapRing.center = {'x':0.0,'y':0.0,'z':acrylicSampleDisk.center['z']+acrylicSampleDisk.height/2.0+upstreamSnapRing.height/2.0}
+masterString = downstreamSnapRing.writeToString(masterString)
+
 ###### Small vacuum layer 
 tpbLayer = GS.tubeVolume('tpbVolume',rMax=acrylicSampleDisk.rMax,height=tpbFilmThickness*3.93701*10**-5,rMin=0.0)
 tpbLayer.mother = shutterTunnel.name
@@ -199,7 +216,8 @@ if generateSourcePoints:
         ax.scatter(line['x'],line['y'],line['z'],color='b')
     ax.scatter(diffractionGratingSurfaceLocation['x'],diffractionGratingSurfaceLocation['y'],diffractionGratingSurfaceLocation['z'],color='r')
     ax.scatter(diffractionGrating.center['x'],diffractionGrating.center['y'],diffractionGrating.center['z'],'g')
-   
+    fig.show()
+
     coordFile = open('./sourceCoords.json','w+')
     json.dump(coordinatePairs,coordFile)
     coordFile.close()
