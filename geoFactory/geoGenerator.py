@@ -108,7 +108,7 @@ sampleWheelHousing.center = {'x':0.0,'y':0.0,'z':-1*sampleWheelHousing.height/2.
 masterString = sampleWheelHousing.writeToString(masterString)
 
 #### Add photodioded
-distanceToPhotodiodeFromSampleWheel = 1.0/16.0 #current spacing=2.0/16.0
+distanceToPhotodiodeFromSampleWheel = 1.0/8.0 #current spacing=2.0/16.0
 
 photodiodeVolume = GS.boxVolume('photodiodeVolume',0.395,0.395,0.05)
 photodiodeVolume.mother = shutterTunnel.name
@@ -146,7 +146,7 @@ backPlastic.center = {'x':0.0,'y':0.0,'z':sampleWheelHousing.center['z']-sampleW
 masterString = backPlastic.writeToString(masterString)
 
 #### Create the acrylic sample
-acrylicDiskFaceDistanceFromFrontSampleWheel = 0.77
+acrylicDiskFaceDistanceFromFrontSampleWheel = 0.7075 #default = 0.77
 
 acrylicSampleDisk = GS.tubeVolume('acrylicSampleDisk',rMax=sampleWheelHousing.rMin,height=0.175,rMin=0.0)
 acrylicSampleDisk.mother = shutterTunnel.name
@@ -154,6 +154,15 @@ acrylicSampleDisk.material = 'acrylic_suvt'
 acrylicSampleDisk.colorVect[3] = 0.8
 acrylicSampleDisk.center = {'x':0.0,'y':0.0,'z':sampleWheelHousing.center['z']+sampleWheelHousing.height/2.0-acrylicSampleDisk.height/2.0-acrylicDiskFaceDistanceFromFrontSampleWheel}
 masterString = acrylicSampleDisk.writeToString(masterString)
+
+##### Put snap rings on both sides of the acrylic sample.
+# Snap ring radial thickness = 0.083"
+upstreamSnapRing = GS.tubeVolume('upstreamSnapRing',rMax=sampleWheelHousing.rMin,rMin=sampleWheelHousing.rMin-0.083,height=1./16)
+upstreamSnapRing.mother = shutterTunnel.name
+upstreamSnapRing.material = 'acrylic_black'
+upstreamSnapRing.colorVect[3] = 0.8
+upstreamSnapRing.center = {'x':0.0,'y':0.0,'z':acrylicSampleDisk.center['z']-acrylicSampleDisk.height/2.0-upstreamSnapRing.height/2.0}
+masterString = upstreamSnapRing.writeToString(masterString)
 
 ###### Small vacuum layer 
 tpbLayer = GS.tubeVolume('tpbVolume',rMax=acrylicSampleDisk.rMax,height=tpbFilmThickness*3.93701*10**-5,rMin=0.0)

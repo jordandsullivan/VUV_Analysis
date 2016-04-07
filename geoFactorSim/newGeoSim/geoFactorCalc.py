@@ -25,8 +25,3 @@ for fileNum in fileVect:
 
 print masterDataVect
 print 'GeoFactor = '+str(float(masterDataVect['VisibleCount'])/float(masterDataVect['UVCount']))
-
-
-
-
-

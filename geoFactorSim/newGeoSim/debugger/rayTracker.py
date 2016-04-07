@@ -3,20 +3,20 @@ import ROOT
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-dataPath = '../data/config_5/'
+dataPath = '~/VUV_Analysis/geoFactorSim/newGeoSim/data/config_31/pos13.root'
 
-fileIterator = rat.dsreader(dataPath+'pos12.root')
+fileIterator = rat.dsreader(dataPath)
 
-createPlot = False
+createPlot = True
 
-#rayVect = [[],[],[],[]]
+rayVect = [[],[],[],[]]
 volumeNames = []
 detectedTracks = []
 
-for i in range(500000):
+for i in range(50000):
     tempEntry = fileIterator.next()
     tempMC = tempEntry.GetMC()
-
+    print i
     for iTrack in range(tempMC.GetMCTrackCount()):
         if iTrack > 3:
             break
@@ -34,7 +34,7 @@ for i in range(500000):
         if aDetectedTrack:
             detectedTracks.append(tempRayPoints)
 
-        #rayVect[iTrack].append(tempRayPoints)
+       # rayVect[iTrack].append(tempRayPoints)
 
 if createPlot:
     fig = plt.figure()

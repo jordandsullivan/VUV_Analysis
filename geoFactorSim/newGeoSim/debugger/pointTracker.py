@@ -3,9 +3,9 @@ import ROOT
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-dataPath = '../data/isotropic_flat_intensity_tpb_surface/'
+dataPath = '~/VUV_Analysis/geoFactorSim/newGeoSim/data/config_30/pos13.root'
 
-fileIterator = rat.dsreader(dataPath+'pos1.root')
+fileIterator = rat.dsreader(dataPath)
 
 rays = []
 
@@ -36,3 +36,4 @@ for line in rays:
         tempZ.append(row['z'])
 
     ax.plot(tempX,tempY,tempZ)
+plt.show()
