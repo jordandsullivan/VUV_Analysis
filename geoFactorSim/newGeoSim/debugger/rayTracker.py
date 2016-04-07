@@ -3,7 +3,7 @@ import ROOT
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-dataPath = '../data/config_5/'
+dataPath = '../data/config_1/'
 
 fileIterator = rat.dsreader(dataPath+'pos12.root')
 
@@ -13,7 +13,7 @@ createPlot = False
 volumeNames = []
 detectedTracks = []
 
-for i in range(5000):
+for i in range(500):
     tempEntry = fileIterator.next()
     tempMC = tempEntry.GetMC()
     print i
