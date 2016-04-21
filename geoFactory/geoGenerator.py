@@ -8,8 +8,9 @@ from mpl_toolkits.mplot3d import Axes3D
 geoFileName = 'VUV.geo'
 
 #### TPB FILM SETTINGS #####
-surfaceTPB = False ## If true, only TPB surface will be created, not volume. If false, surface deactivated and tpb volume.
-tpbFilmThickness = 0.25  # in micrometers
+surfaceTPB = True ## If true, only TPB surface will be created, not volume. If false, surface deactivated and tpb volume.
+tpbFilmThickness = 0.75  # in micrometers
+
 saveTPB = True
 ############################
 ### Generate points on diffraction grating for simulation
@@ -42,7 +43,7 @@ diffractionGrating = GS.boxVolume('grating_vol',0.1,0.75,0.75)
 diffractionGrating.rotation = [0.0,0.0,32.0]
 diffractionGrating.mother = monoHousing.name
 diffractionGrating.colorVect[3] = 1.0
-diffractionGrating.material = 'aluminum'
+diffractionGrating.material = 'pmt_vacuum'
 diffractionGrating.center = {'x':-1*globalOffsetCoords['x'],'y':globalOffsetCoords['y'],'z':globalOffsetCoords['z']}
 masterString = diffractionGrating.writeToString(masterString)
 
@@ -108,7 +109,7 @@ sampleWheelHousing.center = {'x':0.0,'y':0.0,'z':-1*sampleWheelHousing.height/2.
 masterString = sampleWheelHousing.writeToString(masterString)
 
 #### Add photodioded
-distanceToPhotodiodeFromSampleWheel = 2.0/16.0
+distanceToPhotodiodeFromSampleWheel = 1.0/8.0 #current spacing=2.0/16.0
 
 photodiodeVolume = GS.boxVolume('photodiodeVolume',0.395,0.395,0.05)
 photodiodeVolume.mother = shutterTunnel.name
@@ -146,7 +147,7 @@ backPlastic.center = {'x':0.0,'y':0.0,'z':sampleWheelHousing.center['z']-sampleW
 masterString = backPlastic.writeToString(masterString)
 
 #### Create the acrylic sample
-acrylicDiskFaceDistanceFromFrontSampleWheel = 0.77
+acrylicDiskFaceDistanceFromFrontSampleWheel = 0.7075 #default = 0.77
 
 acrylicSampleDisk = GS.tubeVolume('acrylicSampleDisk',rMax=sampleWheelHousing.rMin,height=0.175,rMin=0.0)
 acrylicSampleDisk.mother = shutterTunnel.name
@@ -216,8 +217,6 @@ if generateSourcePoints:
         ax.scatter(line['x'],line['y'],line['z'],color='b')
     ax.scatter(diffractionGratingSurfaceLocation['x'],diffractionGratingSurfaceLocation['y'],diffractionGratingSurfaceLocation['z'],color='r')
     ax.scatter(diffractionGrating.center['x'],diffractionGrating.center['y'],diffractionGrating.center['z'],'g')
-    fig.show()
-
     coordFile = open('./sourceCoords.json','w+')
     json.dump(coordinatePairs,coordFile)
     coordFile.close()
